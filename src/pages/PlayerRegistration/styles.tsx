@@ -2,6 +2,12 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Flex } from "rebass";
 
+export const Form = styled.form`
+  && {
+    height: 100%;
+  }
+`;
+
 export const Container = styled.div`
   && {
     display: grid;

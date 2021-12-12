@@ -9,8 +9,8 @@ import { IFormOption } from "types";
 import * as S from "./styles";
 
 interface Props {
-  value: string | number;
-  onChange: (event: SelectChangeEvent<any>) => void;
+  value?: string | number;
+  onChange?: (event: SelectChangeEvent<any>) => void;
   label: string;
   options: IFormOption[];
   variant?: "standard" | "outlined" | "filled";

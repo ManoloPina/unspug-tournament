@@ -34,4 +34,13 @@ export const theme = createTheme({
       primary: "rgba(0, 0, 0, 0.8)",
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "1rem",
+        },
+      },
+    },
+  },
 });
