@@ -1,7 +1,13 @@
 import React from "react";
 import { uuid } from "uuidv4";
 //Components
-import { InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  FormHelperText,
+} from "@mui/material";
 import { ArrowDropDownRounded } from "@mui/icons-material";
 //types
 import { IFormOption } from "types";
@@ -15,6 +21,8 @@ interface Props {
   options: IFormOption[];
   variant?: "standard" | "outlined" | "filled";
   className?: string;
+  error?: boolean;
+  helperText?: string;
 }
 
 const CustomSelect: React.FC<Props> = ({
@@ -24,6 +32,8 @@ const CustomSelect: React.FC<Props> = ({
   options,
   variant,
   className,
+  error = false,
+  helperText = null,
 }) => {
   return (
     <S.FormControl className={className} variant={variant} fullWidth>
@@ -31,6 +41,7 @@ const CustomSelect: React.FC<Props> = ({
       <Select
         value={value}
         label={label}
+        error={error}
         onChange={onChange}
         IconComponent={() => <ArrowDropDownRounded fontSize="large" />}
       >
@@ -40,6 +51,9 @@ const CustomSelect: React.FC<Props> = ({
           </MenuItem>
         ))}
       </Select>
+      {!!helperText && !!error && (
+        <FormHelperText color="danger">{helperText}</FormHelperText>
+      )}
     </S.FormControl>
   );
 };

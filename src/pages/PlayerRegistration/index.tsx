@@ -1,5 +1,8 @@
 import React, { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 //Components
 import { Typography } from "@mui/material";
 import { PersonRounded, GroupsRounded, SaveRounded } from "@mui/icons-material";
@@ -9,11 +12,33 @@ import * as S from "./styles";
 import * as Styles from "styles";
 //Types
 import { ClassesEnum, IFormOption } from "types";
+import { IFormData } from "./types";
 
 interface Props {}
 
+const formSchema = yup.object({
+  nickname: yup
+    .string()
+    .trim("The contact name cannot include leading and trailing spaces")
+    .strict(true)
+    .required(),
+  class: yup.number().required(),
+  guildName: yup
+    .string()
+    .trim("The contact name cannot include leading and trailing spaces")
+    .strict(true)
+    .required(),
+  wantToBeLeader: yup.boolean(),
+});
+
 const PlayerRegistration: React.FC<Props> = () => {
-  const { control } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>({
+    resolver: yupResolver(formSchema),
+  });
   //handlers
   const classesOpts = useMemo(
     () =>
@@ -40,8 +65,12 @@ const PlayerRegistration: React.FC<Props> = () => {
       ] as IFormOption[],
     []
   );
+
+  const handleFormSubmit = (values: any) => {
+    console.log("values:", values);
+  };
   return (
-    <S.Form>
+    <S.Form onSubmit={handleSubmit(handleFormSubmit)}>
       <S.Container>
         <S.LogoWrapper>
           <img src="logo.png" />
@@ -50,15 +79,25 @@ const PlayerRegistration: React.FC<Props> = () => {
           <Typography variant="h2" fontWeight="bold" color="white" align="left">
             Inscrição do Torneio 24/11 - Fight Pug 6v6 - Blind Draft
           </Typography>
-          <Styles.CustomTextField
-            fullWidth
-            label="Nickname"
-            variant="outlined"
-            className="home-custom-field"
-            InputProps={{ endAdornment: <PersonRounded /> }}
-          />
           <Controller
-            name="classes"
+            control={control}
+            name="nickname"
+            render={({ field }) => (
+              <Styles.CustomTextField
+                {...field}
+                fullWidth
+                label="Nickname"
+                variant="outlined"
+                className="home-custom-field"
+                error={!!errors?.nickname}
+                helperText={errors?.nickname?.message}
+                InputProps={{ endAdornment: <PersonRounded /> }}
+              />
+            )}
+          />
+
+          <Controller
+            name="class"
             control={control}
             render={({ field }) => (
               <Styles.CustomSelect
@@ -67,25 +106,37 @@ const PlayerRegistration: React.FC<Props> = () => {
                 variant="outlined"
                 className="select-class"
                 options={classesOpts}
+                error={!!errors?.class}
+                helperText={errors?.class?.message}
               />
             )}
           />
 
-          <Styles.CustomTextField
-            fullWidth
-            variant="outlined"
-            label="Guild Name"
-            InputProps={{ endAdornment: <GroupsRounded /> }}
-            className="home-custom-field"
+          <Controller
+            name="guildName"
+            control={control}
+            render={({ field }) => (
+              <Styles.CustomTextField
+                {...field}
+                fullWidth
+                variant="outlined"
+                label="Guild Name"
+                className="home-custom-field"
+                error={!!errors?.guildName}
+                helperText={errors?.guildName?.message}
+                InputProps={{ endAdornment: <GroupsRounded /> }}
+              />
+            )}
           />
+
           <Controller
             control={control}
-            name="whant-to-be-leader"
+            name="wantToBeLeader"
             render={({ field }) => (
               <Styles.CustomCheckbox
-                label="Whant to be a leader?"
-                color="secondary"
                 {...field}
+                color="secondary"
+                label="Whant to be a leader?"
               />
             )}
           />
@@ -93,12 +144,14 @@ const PlayerRegistration: React.FC<Props> = () => {
             size="large"
             variant="outlined"
             color="secondary"
+            type="submit"
             endIcon={<SaveRounded fontSize="large" />}
           >
             Register Player
           </Button>
         </S.Sidebar>
       </S.Container>
+      <DevTool control={control} />
     </S.Form>
   );
 };

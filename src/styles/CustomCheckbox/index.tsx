@@ -11,7 +11,7 @@ interface Props extends CheckboxProps {
   label?: string;
 }
 
-const CustomChecbox: React.FC<Props> = ({ label = "", ...checkboxProps }) => {
+const CustomCheckbox: React.FC<Props> = ({ label = "", ...checkboxProps }) => {
   return (
     <FormGroup>
       <FormControlLabel
@@ -22,4 +22,4 @@ const CustomChecbox: React.FC<Props> = ({ label = "", ...checkboxProps }) => {
   );
 };
 
-export default React.memo(CustomChecbox);
+export default React.memo(CustomCheckbox);
