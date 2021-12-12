@@ -2,7 +2,7 @@
 // import "./App.css";
 //Styles
 import { theme } from "styles/theme";
-import * as S from "./styles";
+import * as S from "./app-styles";
 //Components
 import RouterContainer from "Routes/RouteContainer";
 import { ThemeProvider } from "@mui/material";

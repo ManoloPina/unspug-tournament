@@ -22,7 +22,16 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: "#94644A",
-      light: "#FFE9CE",
+      light: "#C9A68C",
+      dark: "#54433A",
+    },
+    secondary: {
+      main: "#FFE9CE",
+      light: "#FFF8F0",
+      dark: "#FFDAB7",
+    },
+    text: {
+      primary: "rgba(0, 0, 0, 0.8)",
     },
   },
 });
