@@ -16,7 +16,7 @@ const CustomCheckbox: React.FC<Props> = ({ label = "", ...checkboxProps }) => {
     <FormGroup>
       <FormControlLabel
         label={label}
-        control={<Checkbox {...checkboxProps} defaultChecked />}
+        control={<Checkbox {...checkboxProps} />}
       />
     </FormGroup>
   );

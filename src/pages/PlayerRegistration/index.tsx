@@ -3,6 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { usePlayer } from "hooks";
+import { useSnackbar } from "notistack";
 //Components
 import { Typography } from "@mui/material";
 import { PersonRounded, GroupsRounded, SaveRounded } from "@mui/icons-material";
@@ -13,6 +15,7 @@ import * as Styles from "styles";
 //Types
 import { ClassesEnum, IFormOption } from "types";
 import { IFormData } from "./types";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
@@ -22,16 +25,18 @@ const formSchema = yup.object({
     .trim("The contact name cannot include leading and trailing spaces")
     .strict(true)
     .required(),
-  class: yup.number().required(),
+  classID: yup.number().required(),
   guildName: yup
     .string()
     .trim("The contact name cannot include leading and trailing spaces")
     .strict(true)
     .required(),
-  wantToBeLeader: yup.boolean(),
+  wantsToBeLeader: yup.boolean(),
 });
 
 const PlayerRegistration: React.FC<Props> = () => {
+  const { requests: playerHttp, classesOpts } = usePlayer();
+  const { enqueueSnackbar } = useSnackbar();
   const {
     control,
     handleSubmit,
@@ -40,34 +45,21 @@ const PlayerRegistration: React.FC<Props> = () => {
     resolver: yupResolver(formSchema),
   });
   //handlers
-  const classesOpts = useMemo(
-    () =>
-      [
-        { label: "Arcane Master", value: ClassesEnum.ArcaneMaster },
-        { label: "Beggetter", value: ClassesEnum.Beggetter },
-        { label: "Blase Soul", value: ClassesEnum.BlaseSoul },
-        { label: "Chronomancer", value: ClassesEnum.Chronomancer },
-        { label: "Divine Avenger", value: ClassesEnum.DivineAvenger },
-        { label: "Doram", value: ClassesEnum.Doram },
-        { label: "Dragon Fist", value: ClassesEnum.DragonFist },
-        { label: "Gunslinger", value: ClassesEnum.Gunslinger },
-        { label: "Lightbringer", value: ClassesEnum.Lightbringer },
-        { label: "Luna Danseuse", value: ClassesEnum.LunaDanseuse },
-        { label: "Ninja", value: ClassesEnum.Ninja },
-        { label: "Novice Guardian", value: ClassesEnum.NoviceGuardian },
-        { label: "Phanton Dance", value: ClassesEnum.PhantonDance },
-        { label: "Ronin", value: ClassesEnum.Ronin },
-        { label: "Runemaster", value: ClassesEnum.Runemaster },
-        { label: "Slayer", value: ClassesEnum.Slayer },
-        { label: "Solar Trouvere", value: ClassesEnum.SolarTrouvere },
-        { label: "Stellar Hunter", value: ClassesEnum.StellarHunter },
-        { label: "Wataru", value: ClassesEnum.Wataru },
-      ] as IFormOption[],
-    []
-  );
 
-  const handleFormSubmit = (values: any) => {
-    console.log("values:", values);
+  const handleFormSubmit = async (values: IFormData) => {
+    try {
+      const res = await playerHttp.register(values);
+      !!res
+        ? enqueueSnackbar("Player successfully registered", {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          })
+        : enqueueSnackbar("It wasn't possible to register this player.", {
+            variant: "warning",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+    } finally {
+    }
   };
   return (
     <S.Form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -97,7 +89,7 @@ const PlayerRegistration: React.FC<Props> = () => {
           />
 
           <Controller
-            name="class"
+            name="classID"
             control={control}
             render={({ field }) => (
               <Styles.CustomSelect
@@ -105,9 +97,12 @@ const PlayerRegistration: React.FC<Props> = () => {
                 label="Classes"
                 variant="outlined"
                 className="select-class"
-                options={classesOpts}
-                error={!!errors?.class}
-                helperText={errors?.class?.message}
+                options={classesOpts.map((opt) => ({
+                  ...opt,
+                  label: <S.ClassesOptWrapper>{opt.label}</S.ClassesOptWrapper>,
+                }))}
+                error={!!errors?.classID}
+                helperText={errors?.classID?.message}
               />
             )}
           />
@@ -131,12 +126,12 @@ const PlayerRegistration: React.FC<Props> = () => {
 
           <Controller
             control={control}
-            name="wantToBeLeader"
+            name="wantsTobeLeader"
             render={({ field }) => (
               <Styles.CustomCheckbox
                 {...field}
                 color="secondary"
-                label="Whant to be a leader?"
+                label="Do you want to be a leader?"
               />
             )}
           />

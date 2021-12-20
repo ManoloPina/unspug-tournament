@@ -1,5 +1,6 @@
 // import logo from "./logo.svg";
 // import "./App.css";
+import { SnackbarProvider } from "notistack";
 //Styles
 import { theme } from "styles/theme";
 import * as S from "./app-styles";
@@ -10,11 +11,13 @@ import { ThemeProvider } from "@mui/material";
 interface Props {}
 const App: React.FC<Props> = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <S.AppContainer className="App">
-        <RouterContainer />
-      </S.AppContainer>
-    </ThemeProvider>
+    <SnackbarProvider>
+      <ThemeProvider theme={theme}>
+        <S.AppContainer className="App">
+          <RouterContainer />
+        </S.AppContainer>
+      </ThemeProvider>
+    </SnackbarProvider>
   );
 };
 

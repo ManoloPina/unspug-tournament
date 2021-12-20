@@ -1,6 +1,3 @@
-export interface IFormData {
-  nickname: string;
-  class: number;
-  guildName: string;
-  wantToBeLeader: boolean;
-}
+import { IPlayer } from "types/Player";
+
+export type IFormData = IPlayer;

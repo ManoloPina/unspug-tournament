@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactChild } from "react";
 import { uuid } from "uuidv4";
 //Components
 import {

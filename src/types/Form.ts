@@ -1,4 +1,6 @@
+import { ReactChild } from "react";
+
 export interface IFormOption {
-  label: string;
+  label: string | ReactChild;
   value: string | number;
 }

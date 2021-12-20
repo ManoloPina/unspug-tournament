@@ -20,3 +20,11 @@ export enum ClassesEnum {
   Beggetter = 18,
   ArcaneMaster = 19,
 }
+
+export interface IPlayer {
+  id: string;
+  nickname: string;
+  classID: number;
+  guildName: string;
+  wantsTobeLeader: boolean;
+}

@@ -63,3 +63,10 @@ export const Sidebar = styled.div`
     }
   }
 `;
+
+export const ClassesOptWrapper = styled(Flex)`
+  && {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
