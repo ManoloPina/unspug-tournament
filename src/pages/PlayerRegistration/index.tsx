@@ -9,13 +9,13 @@ import { useSnackbar } from "notistack";
 import { Typography } from "@mui/material";
 import { PersonRounded, GroupsRounded, SaveRounded } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import ClassOptItem from "pages/PlayerRegistration/ClassOptItem";
 //Styles
 import * as S from "./styles";
 import * as Styles from "styles";
+import { Box } from "rebass";
 //Types
-import { ClassesEnum, IFormOption } from "types";
 import { IFormData } from "./types";
-import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
@@ -35,7 +35,11 @@ const formSchema = yup.object({
 });
 
 const PlayerRegistration: React.FC<Props> = () => {
-  const { requests: playerHttp, classesOpts } = usePlayer();
+  const {
+    requests: playerHttp,
+    classesOpts,
+    getImagePathByClassId,
+  } = usePlayer();
   const { enqueueSnackbar } = useSnackbar();
   const {
     control,
@@ -99,7 +103,7 @@ const PlayerRegistration: React.FC<Props> = () => {
                 className="select-class"
                 options={classesOpts.map((opt) => ({
                   ...opt,
-                  label: <S.ClassesOptWrapper>{opt.label}</S.ClassesOptWrapper>,
+                  label: <ClassOptItem opt={opt} />,
                 }))}
                 error={!!errors?.classID}
                 helperText={errors?.classID?.message}

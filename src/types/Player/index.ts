@@ -16,7 +16,7 @@ export enum ClassesEnum {
   Doram = 14,
   DivineAvenger = 15,
   Chronomancer = 16,
-  BlaseSoul = 17,
+  BladeSoul = 17,
   Beggetter = 18,
   ArcaneMaster = 19,
 }

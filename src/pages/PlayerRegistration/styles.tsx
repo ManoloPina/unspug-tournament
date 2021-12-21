@@ -68,5 +68,11 @@ export const ClassesOptWrapper = styled(Flex)`
   && {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    width 100%;
+    & img {
+      height: 1.8rem;
+      width: auto;
+    }
   }
 `;
