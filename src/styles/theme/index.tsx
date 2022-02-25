@@ -39,6 +39,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "1rem",
+          boxShadow: "none",
+        },
+        containedSecondary: {
+          boxShadow: "none",
         },
       },
     },
